@@ -2,13 +2,26 @@ const Discord = require("discord.js");
 const timeoutPromise = require('util').promisify(setTimeout);
 var agree = "✅";
 var disagree = "❌";
+var pollName = "";
 
 
 exports.run = async (client, message, args) => {
 
-  console.log(args.length);
-  if(args.length !== 2) {
-    return message.channel.send('Incorrect Format -- !vote seconds|minutes|hours #');
+  if(!message.guild.me.hasPermission("MANAGE_MESSAGES")) {
+    return message.channel.send("Please give my role the manage messages permissions and then try again.");
+  }
+
+  for(i = 2; i < args.length; i++) {
+    if(i === args.length - 1) {
+       pollName += args[i];
+     }
+     else {
+       pollName += (args[i] + " ");
+     }
+  }
+
+  if(args.length < 3) {
+    return message.channel.send('Incorrect Format -- !vote seconds|minutes|hours # name of poll');
   }
   else {
 
@@ -26,14 +39,19 @@ exports.run = async (client, message, args) => {
       return message.channel.send('Invalid unit of time');
     }
 
-    let botMessage = await message.channel.send('Vote!');
+    let botMessage = await message.channel.send(`Vote! **${pollName}**`);
 
     const agreeReaction = await botMessage.react(agree);
     const disagreeReaction = await botMessage.react(disagree);
 
-    botMessage.pin();
-    await timeoutPromise(awaitLength);
-    botMessage.unpin();
+    try {
+      botMessage.pin();
+      await timeoutPromise(awaitLength);
+      botMessage.unpin();
+    }
+    catch(err) {
+      return message.channel.send("Doesn't have manage message ability, please give me a role that does!");
+    }
     message.channel.send(`Voting Finished! \n\n${agree}: ${(agreeReaction.count)-1}\n${disagree}: ${(disagreeReaction.count)-1}`);
 
     if(agreeReaction.count > disagreeReaction.count) {
@@ -47,5 +65,5 @@ exports.run = async (client, message, args) => {
     }
   }
 
-
+  pollName = "";
 }
