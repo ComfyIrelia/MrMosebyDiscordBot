@@ -2,6 +2,7 @@ const botconfig = require("./botconfig.json");
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const fs = require("fs");
+var users = [];
 
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
 fs.readdir("./commands/", (err, files) => {
@@ -14,13 +15,41 @@ fs.readdir("./commands/", (err, files) => {
   });
 });
 
+function userObject(uid, gid) {
+  this.userID = uid;
+  this.guildID = gid;
+  this.points = 0;
+}
+
+userObject.getUID = function () {
+  return this.userID;
+}
+
+userObject.getGID = function () {
+  return this.guildID;
+}
+
+userObject.add = void function () {
+  this.points++;
+}
+
 client.on("ready", async () => {
   console.log(`${client.user.username} is online on ${client.guilds.size} servers!`);
-  client.user.setActivity("the Lobby", {type: "WATCHING"});
+  client.user.setActivity("You", {type: "WATCHING"});
 });
 
 client.on("message", message => {
   if (message.author.bot) return;
+  if (message.guild) {
+    var wasUserFound = false;
+    for(var i = 0; i < users.length; i++) {
+      if(users[i].getUID == message.author.id && users[i].getGID == message.guild.id) {
+        users[i].
+      }
+    }
+      var user = new userObject(message.author.id, message.guild.id);
+      users.push(user);
+  }
   if(message.content.indexOf(botconfig.prefix) !== 0) return;
 
   // This is the best way to define args. Trust me.
