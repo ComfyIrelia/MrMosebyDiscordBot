@@ -15,24 +15,6 @@ fs.readdir("./commands/", (err, files) => {
   });
 });
 
-function userObject(uid, gid) {
-  this.userID = uid;
-  this.guildID = gid;
-  this.points = 0;
-}
-
-userObject.getUID = function () {
-  return this.userID;
-}
-
-userObject.getGID = function () {
-  return this.guildID;
-}
-
-userObject.add = void function () {
-  this.points++;
-}
-
 client.on("ready", async () => {
   console.log(`${client.user.username} is online on ${client.guilds.size} servers!`);
   client.user.setActivity("You", {type: "WATCHING"});
@@ -41,11 +23,6 @@ client.on("ready", async () => {
 client.on("message", message => {
   if (message.author.bot) return;
   if (message.guild) {
-    var wasUserFound = false;
-    for(var i = 0; i < users.length; i++) {
-      if(users[i].getUID == message.author.id && users[i].getGID == message.guild.id) {
-        users[i].
-      }
     }
       var user = new userObject(message.author.id, message.guild.id);
       users.push(user);
