@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const userPoints = require("./userpoints.json");
 var users = [];
 
-function user(uid, gid) {
+function userObject(uid, gid) {
   this.userID = uid;
   this.guildID = gid;
   this.points = 0;
