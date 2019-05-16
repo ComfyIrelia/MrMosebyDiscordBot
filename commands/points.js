@@ -19,7 +19,6 @@ userObject.getGID = function () {
 userObject.addPoint = function () {
   this.points++;
 }
-
 exports.run = (client, message, args) => {
   //var uid = user that sent message id
   //var gid = users guild that message was sent from

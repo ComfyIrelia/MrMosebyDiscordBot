@@ -17,9 +17,19 @@ exports.run = async (client, message, args) => {
     const raffleReaction = await botMessage.react(raffle);
 
     try {
-      botMessage.pin();
-      await timeoutPromise(awaitLength);
-      botMessage.unpin();
+
+      const filter = (reaction, user) => {
+        return [raffle].includes(reaction.emoji.name) && user.id === message.author.id;
+      };
+
+      message.awaitReactions(filter, { max: 1, time: 10000, errors: ['time'] })
+        .then(collected => {
+          const reaction = collected.first();
+
+          if(reaction.emoji.name === raffle) {
+            message.reply(`You reacted!`)
+          }
+        })
     }
     catch(err) {
       return message.channel.send("Doesn't have manage message permission.");
