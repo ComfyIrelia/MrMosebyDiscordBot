@@ -44,4 +44,7 @@ exports.run = (client, message, args) => {
 
 exports.add = (messageID, guildID) => {
 
+exports.add = (userID, guildID) => {
+  //When a user types a message this is invoked adding a point to the user in the specific server.
+  //A users points won't share across all their servers with this bot.
 }

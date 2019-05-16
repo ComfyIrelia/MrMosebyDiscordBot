@@ -22,6 +22,11 @@ client.on("ready", async () => {
 
 client.on("message", message => {
   if (message.author.bot) return;
+  if (message.guild) {
+    }
+      var user = new userObject(message.author.id, message.guild.id);
+      users.push(user);
+  }
   if(message.content.indexOf(botconfig.prefix) !== 0) return;
 
   // This is the best way to define args. Trust me.
